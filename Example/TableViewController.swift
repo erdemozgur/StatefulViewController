@@ -34,7 +34,7 @@ class TableViewController: UITableViewController, StatefulViewController {
         refresh()
     }
 
-    func refresh() {
+    @objc  func refresh() {
         if (lastState == .loading) { return }
 
         startLoading {
@@ -43,7 +43,7 @@ class TableViewController: UITableViewController, StatefulViewController {
         print("startLoading -> loadingState: \(self.lastState.rawValue)")
 
         // Fake network call
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             // Success
             self.dataArray = ["Merlot", "Sauvignon Blanc", "Blaufränkisch", "Pinot Nior"]
             self.tableView.reloadData()

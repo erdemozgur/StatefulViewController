@@ -12,24 +12,43 @@ import StatefulViewController
 class LoadingView: BasicPlaceholderView, StatefulPlaceholderView {
 
 	let label = UILabel()
+    let imageView = UIImageView()
 	
 	override func setupView() {
 		super.setupView()
 		
+        imageView.image = UIImage(named: "vesikalik")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        centerView.addSubview(imageView)
+        
 		label.text = "Loading..."
 		label.translatesAutoresizingMaskIntoConstraints = false
 		centerView.addSubview(label)
 		
-		let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicator = UIActivityIndicatorView(style: .gray)
 		activityIndicator.startAnimating()
 		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
 		centerView.addSubview(activityIndicator)
+        
+        if #available(iOS 11.0, *) {
+            imageView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
+            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
+            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 20).isActive = true
+            imageView.bottomAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: -60).isActive = true
+
+
+        } else {
+            // Fallback on earlier versions
+        }
 		
-		let views = ["label": label, "activity": activityIndicator]
+        let views = ["label": label, "activity": activityIndicator]
         let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-[activity]-[label]-|", options: [], metrics: nil, views: views)
 		let vConstraintsLabel = NSLayoutConstraint.constraints(withVisualFormat: "V:|[label]|", options: [], metrics: nil, views: views)
 		let vConstraintsActivity = NSLayoutConstraint.constraints(withVisualFormat: "V:|[activity]|", options: [], metrics: nil, views: views)
+        
 
+        
 		centerView.addConstraints(hConstraints)
 		centerView.addConstraints(vConstraintsLabel)
 		centerView.addConstraints(vConstraintsActivity)
